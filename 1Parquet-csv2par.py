@@ -183,9 +183,19 @@ for type_idx, type_folder in enumerate(task_type_folders):
         merged_df["task_index"] = task_index
 
         merged_df = merged_df[["index", "episode_index", "frame_index", "timestamp", "task_index", "state", "action", "bbox", "grasp"]]
+        
+        # ---------- 下采样: 每 1 秒保留一帧 ----------
+        # timestamp 是 0.0, 0.2, 0.4, 0.6, ...
+        # 因此每隔 5 帧取一帧即可 (1.0s / 0.2s = 5)
+        sample_interval = 5
+        sampled_df = merged_df.iloc[::sample_interval].reset_index(drop=True)
+        merged_df = sampled_df
+
+
         parquet_file = os.path.join(chunk_folder, f"episode_{episode_index:06d}.parquet")
-        merged_df.to_parquet(parquet_file, engine="pyarrow", index=False)
+        sampled_df.to_parquet(parquet_file, engine="pyarrow", index=False)
 
         print(f"✅ 已生成长程任务 {task_folder} 的 parquet 文件: {parquet_file}, 帧数={len(merged_df)}")
 
     task_index += 1
+
