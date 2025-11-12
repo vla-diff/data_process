@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 定义路径参数
-SRC_ROOT="/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_symlink_only_last" #源数据根目录路径
+SRC_ROOT="/data2/konghanlin/new_wallx/datasets/test_split_ori_data" #源数据根目录路径
 # DST_ROOT="/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_ori_nav_catch_put" #目标数据根目录路径
 DST_ROOT=$SRC_ROOT
-FINAL_ROOT="/inspire/hdd/global_user/konghanlin-253108540238/user_cache/lerobot/dzb/our_data_test" #最终输出根目录路径
+FINAL_ROOT="/data2/konghanlin/new_wallx/datasets/lerobot_datasets/dzb/our_data_test" #最终输出根目录路径
 
 # rm -r $DST_ROOT
 rm -r $FINAL_ROOT
@@ -12,6 +12,7 @@ mkdir -p $DST_ROOT
 mkdir -p $FINAL_ROOT
 
 # echo "0"
+
 # python3 0ChangeInstruction.py --input_root $SRC_ROOT --output_train_root $DST_ROOT
 
 echo "1"
