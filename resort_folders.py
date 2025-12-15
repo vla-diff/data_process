@@ -4,7 +4,7 @@ import shutil
 from tqdm import tqdm
 
 # ========== 配置 ==========
-ROOT = Path("/data2/konghanlin/new_wallx/datasets/ori_datasets")  # 原目录
+ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw_data")  # 原目录
 DRY_RUN = False   # True 时仅打印，不执行
 # ==========================
 

@@ -1,7 +1,7 @@
 import os
 import re
 
-base_dir = "/data2/konghanlin/new_wallx/datasets/reorganized_ori_data"
+base_dir = "/mnt/diff-ali/workspace/wall-x/datasets/raw_data"
 
 for root, dirs, files in os.walk(base_dir):
     for filename in files:

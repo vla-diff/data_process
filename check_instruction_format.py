@@ -3,7 +3,7 @@
 
 import os
 
-ROOT_DIR = "/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_ori_nav_catch_put"
+ROOT_DIR = "/mnt/diff-ali/workspace/wall-x/datasets/raw_data"
 
 def ensure_period(s: str) -> str:
     """保证字符串以句点（. 或 。）结尾，不是则补一个 ."""
@@ -20,16 +20,16 @@ def fix_instruction_file(path):
       ok=False 表示无法修复，需要人工处理
     """
     if not os.path.isfile(path):  # 检查文件是否存在
-        return False, "缺少 instruction.txt 文件"
+        return False, "缺少 instruction.txt 文件",False
 
     try:
         with open(path, "r", encoding="utf-8") as f:
             original_content = f.read()
     except UnicodeDecodeError:
-        return False, "文件不是 UTF-8 编码，无法处理"
+        return False, "文件不是 UTF-8 编码，无法处理", original_content
 
     if not original_content.strip():
-        return False, "文件内容为空"
+        return False, "文件内容为空",False
 
     # 去掉首尾空白（包含换行），中间内容原样保留
     content = original_content.strip()
@@ -39,7 +39,7 @@ def fix_instruction_file(path):
     idx_put = content.find("Put:")
 
     if idx_catch == -1 or idx_put == -1 or idx_put <= idx_catch:
-        return False, "无法找到正确的 Catch: / Put: 位置，未修改"
+        return False, "无法找到正确的 Catch: / Put: 位置，未修改",False
 
     prefix = content[:idx_catch].rstrip()  # 前缀去掉尾部空格
     catch_raw = content[idx_catch + len("Catch:"):idx_put]
@@ -50,11 +50,11 @@ def fix_instruction_file(path):
 
     # 三部分都必须非空
     if not prefix:
-        return False, "前缀说明部分为空，无法自动修复"
+        return False, "前缀说明部分为空，无法自动修复",False
     if not catch_part:
-        return False, "Catch: 后内容为空，无法自动修复"
+        return False, "Catch: 后内容为空，无法自动修复",False
     if not put_part:
-        return False, "Put: 后内容为空，无法自动修复"
+        return False, "Put: 后内容为空，无法自动修复",False
 
     # 保证每一段都以句点结尾
     prefix_fixed = ensure_period(prefix)
