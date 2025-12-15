@@ -4,9 +4,9 @@ import os
 from tqdm import tqdm
 
 # ========== 配置 ==========
-SRC_ROOT = Path("/data2/konghanlin/new_wallx/datasets/reorganized_ori_data")
-TRAIN_ROOT = Path("/data2/konghanlin/new_wallx/datasets/train_split")
-TEST_ROOT = Path("/data2/konghanlin/new_wallx/datasets/test_split")
+SRC_ROOT = Path("/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_ori_nav_catch_put")
+TRAIN_ROOT = Path("/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_symlink_exclude_last")
+TEST_ROOT = Path("/inspire/hdd/global_user/konghanlin-253108540238/user_cache/datasets/tmp_symlink_only_last")
 
 DRY_RUN = False      # True: 仅打印，不执行
 LINK_MODE = True     # True: 使用软链接，False: 复制文件夹
@@ -47,7 +47,7 @@ print(f"📂 源目录: {SRC_ROOT}")
 print(f"📁 训练集输出: {TRAIN_ROOT}")
 print(f"📁 测试集输出: {TEST_ROOT}")
 
-make_dir(TRAIN_ROOT)
+# make_dir(TRAIN_ROOT)
 make_dir(TEST_ROOT)
 
 # 遍历每个任务类型
@@ -63,22 +63,22 @@ for type_dir in sorted(SRC_ROOT.iterdir()):
 
     last_task = sub_tasks[-1]
     other_tasks = sub_tasks[:-1]
+    instr_src = type_dir / "instruction.txt"
 
     # ---------------- 处理训练集 ----------------
-    train_type_dir = TRAIN_ROOT / type_name
-    make_dir(train_type_dir)
+    # train_type_dir = TRAIN_ROOT / type_name
+    # make_dir(train_type_dir)
 
-    instr_src = type_dir / "instruction.txt"
-    if instr_src.exists():
-        shutil.copy(instr_src, train_type_dir / "instruction.txt")
+    # if instr_src.exists():
+    #     shutil.copy(instr_src, train_type_dir / "instruction.txt")
 
-    for i, t in enumerate(other_tasks, start=1):
-        dst_t = train_type_dir / str(i)
-        if DRY_RUN:
-            print(f"[DRY_RUN] TRAIN: {t} -> {dst_t}")
-            continue
-        copy_or_link(t, dst_t)
-        rename_inner_folder(dst_t, i)
+    # for i, t in enumerate(other_tasks, start=1):
+    #     dst_t = train_type_dir / str(i)
+    #     if DRY_RUN:
+    #         print(f"[DRY_RUN] TRAIN: {t} -> {dst_t}")
+    #         continue
+    #     copy_or_link(t, dst_t)
+    #     rename_inner_folder(dst_t, i)
 
     # ---------------- 处理测试集 ----------------
     test_type_dir = TEST_ROOT / type_name

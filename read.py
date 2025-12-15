@@ -31,7 +31,7 @@ def read_parquet(file_path: str, save_csv: bool = True):
         print(f"✅ 文件 {file_path} 读取成功！")
         print(f"📊 数据维度: {df.shape}")
         print(f"🧾 列名: {list(df.columns)}\n")
-        print(df.head(2))
+        print(df)
 
         # 🚀 额外功能：保存为 CSV 文件
         if save_csv:
@@ -45,5 +45,5 @@ def read_parquet(file_path: str, save_csv: bool = True):
 
 if __name__ == "__main__":
     # 🔧 在这里设置 parquet 文件路径
-    file_path = r"/inspire/hdd/global_user/konghanlin-253108540238/user_cache/lerobot/dzb/our_data_train/data/chunk-000/episode_000000.parquet"
+    file_path = r"/inspire/hdd/global_user/konghanlin-253108540238/user_cache/lerobot/dzb/our_data/data/chunk-000/episode_000000.parquet"
     read_parquet(file_path)
