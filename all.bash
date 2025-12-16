@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 定义路径参数
-SRC_ROOT="/mnt/diff-ali/workspace/wall-x/datasets/raw/test_data" #源数据根目录路径
+SRC_ROOT="../datasets/raw/test_data" #源数据根目录路径
 DST_ROOT=$SRC_ROOT
-FINAL_ROOT="/mnt/diff-ali/workspace/wall-x/datasets/dzb/our_data_test" #最终输出根目录路径
+FINAL_ROOT="../datasets/dzb/our_data_test" #最终输出根目录路径
 
 rm -r $FINAL_ROOT
 mkdir -p $FINAL_ROOT

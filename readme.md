@@ -4,6 +4,7 @@
 2. `python test_env.py`
 若无报错，则ok
 # 脚本功能解释
+## raw数据处理
 `resort_folders.py`用于给文件夹重新排序，得到连续序号。
 `unzip.py`用于解压刚从mdoelscope上下载下来的数据集，得到raw数据集。
 `check.bash`用于检查raw数据集是否有脏东西
@@ -12,6 +13,7 @@
 `check_instruction_format.py`用于检查instcution.txt里面的格式
 `zip.bash`是用来压缩raw数据集后传到modelscope的
 
+## lerobot数据生成
 上述都是用于操作raw数据的，没问题后即可开始生成lerobot数据集：
 `all.bash`是一键运行脚本，需要改一下`SRC_ROOT`和`FINAL_ROOT`。
 SRC即为原来的raw文件，FINAL_ROOT即为lerobot数据集存放的位置。
@@ -20,3 +22,6 @@ SRC即为原来的raw文件，FINAL_ROOT即为lerobot数据集存放的位置。
 
 `read.py`用于读取.parquet文件的数据，并保存为csv
 注意，如果`data_process/1Parquet-csv2par.py`开了下采样，lerobot数据集里的info.json的fps需要手动改。下采样几倍 即为 5/几倍。比如下采样2倍，则fps改成2.5。
+
+## 末尾、非末尾数据划分
+end_data_split里的脚本。`end_data_split/detect_stop_frames.py`是划分的，而`end_data_split/trim_videos_from_stop.py`多了个可视化视频的生成，用于判断划分的对不对。

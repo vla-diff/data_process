@@ -4,9 +4,9 @@ import os
 from tqdm import tqdm
 
 # ========== 配置 ==========
-SRC_ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw/reorganized_raw_data")
-TRAIN_ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw/train_data")
-TEST_ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw/test_data")
+SRC_ROOT = Path("datasets/raw/reorganized_raw_data")
+TRAIN_ROOT = Path("datasets/raw/train_data")
+TEST_ROOT = Path("datasets/raw/test_data")
 
 DRY_RUN = False      # True: 仅打印，不执行
 LINK_MODE = True     # True: 使用软链接，False: 复制文件夹

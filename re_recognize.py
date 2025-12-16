@@ -4,8 +4,8 @@ from pathlib import Path
 from tqdm import tqdm
 
 # ========== 配置 ==========
-SRC_ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw/raw_data")  # 原数据根目录
-DST_ROOT = Path("/mnt/diff-ali/workspace/wall-x/datasets/raw/reorganized_raw_data")            # 输出根目录
+SRC_ROOT = Path("datasets/raw/raw_data")  # 原数据根目录
+DST_ROOT = Path("datasets/raw/reorganized_raw_data")            # 输出根目录
 DRY_RUN = False   # True: 仅打印，不执行
 LINK_MODE = True  # True: 建立软链接而不是复制
 # ==========================
