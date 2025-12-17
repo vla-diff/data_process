@@ -93,50 +93,16 @@ for type_idx, type_folder in enumerate(task_type_folders):
             df = pd.read_csv(csv_file)
 
             required_columns = ["位置X", "位置Y", "位置Z",
-                                "姿态X", "姿态Y", "姿态Z", "姿态W"]
+                                "姿态X", "姿态Y", "姿态Z", "姿态W","bbox_x1","bbox_y1","bbox_x2","bbox_y2"]
             if not all(col in df.columns for col in required_columns):
                 raise ValueError(f"CSV 缺少必要列: {csv_file}")
 
             df = df[required_columns]
 
-            # 默认所有行 bbox 全为 0
-            df["bbox_x1"] = 0
-            df["bbox_y1"] = 0
-            df["bbox_x2"] = 0
-            df["bbox_y2"] = 0
-
-            # ✅ 如果当前 data.csv 对应目录下存在 ./images/bbox.jsonl，
-            # 则把最后一行的 bbox 设置为该文件中的 boxes[0]
-            base_dir = os.path.dirname(csv_file)
-            bbox_file = os.path.join(base_dir, "images", "bbox.jsonl")
-
-            if os.path.exists(bbox_file) and not df.empty:
-                try:
-                    box_applied = False
-                    with open(bbox_file, "r", encoding="utf-8") as f:
-                        for line in f:
-                            line = line.strip()
-                            if not line:
-                                continue
-                            obj = json.loads(line)
-                            boxes = obj.get("boxes")
-                            # print("boxes:",boxes)
-                            # 只取第一个 box，如 [306, 712, 725, 998]
-                            if boxes and len(boxes) > 0 and len(boxes[0]) == 4:
-                                x1, y1, x2, y2 = boxes[0]
-                                df.loc[df.index[-1], "bbox_x1"] = x1/1000*640
-                                df.loc[df.index[-1], "bbox_y1"] = y1/1000*480
-                                df.loc[df.index[-1], "bbox_x2"] = x2/1000*640
-                                df.loc[df.index[-1], "bbox_y2"] = y2/1000*480
-                                box_applied = True
-                                break
-                    if not box_applied:
-                        print(f"⚠️ bbox.jsonl 中未找到有效 boxes: {bbox_file}，使用默认 0")
-                except Exception as e:
-                    print(f"⚠️ 读取 bbox.jsonl 失败: {bbox_file}, 错误: {e}")
-            else:
-                if not os.path.exists(bbox_file):
-                    print(f"⚠️ 找不到 bbox.jsonl: {bbox_file}, 默认 bbox=0")
+            df["bbox_x1"] = df["bbox_x1"] / 1000.0 * 640.0
+            df["bbox_x2"] = df["bbox_x2"] / 1000.0 * 640.0
+            df["bbox_y1"] = df["bbox_y1"] / 1000.0 * 480.0
+            df["bbox_y2"] = df["bbox_y2"] / 1000.0 * 480.0
 
             df["grasp"] = grasp
 

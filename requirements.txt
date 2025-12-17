@@ -4,3 +4,4 @@ pyarrow
 pandas
 natsort
 scipy
+openai
