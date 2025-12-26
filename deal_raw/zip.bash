@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SRC=/mnt/diff-ali/workspace/wall-x/datasets/raw/raw_data
-DST=/mnt/diff-ali/workspace/wall-x/datasets/raw/raw_data_zips
+SRC=/home/duanzhibo/wall-x/datasets/raw/raw_data
+DST=/home/duanzhibo/wall-x/datasets/raw/raw_data_zips
 
 mkdir -p "$DST"
 
@@ -17,7 +17,10 @@ for class_dir in "$SRC"/*/; do
 
         echo "  Compressing $class_name/$sub_name → $out_zip"
 
-        zip -rq "$out_zip" "$sub_dir"
+        (
+            cd "$sub_dir" || exit
+            zip -rq "$out_zip" .
+        )
     done
 done
 

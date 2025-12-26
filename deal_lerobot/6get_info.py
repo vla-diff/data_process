@@ -100,7 +100,7 @@ meta = {
     "total_videos": total_videos,
     "total_chunks": total_chunks,
     "chunks_size": chunk_size,
-    "fps": int(fps),
+    "fps": float(fps/2),
     "splits": {
         "train": f"0:{total_episodes+1}"
     },

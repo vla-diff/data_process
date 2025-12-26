@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 定义路径参数
-SRC_ROOT="../../datasets/raw/train_data" #源数据根目录路径
+SRC_ROOT="../../datasets/raw/tiny_data" #源数据根目录路径
 DST_ROOT=$SRC_ROOT
-FINAL_ROOT="../../datasets/dzb/our_data_train" #最终输出根目录路径
+FINAL_ROOT="../../datasets/dzb/our_data_tiny" #最终输出根目录路径
 
 rm -r $FINAL_ROOT
 mkdir -p $FINAL_ROOT
