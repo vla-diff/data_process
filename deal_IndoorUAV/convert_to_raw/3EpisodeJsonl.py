@@ -109,17 +109,23 @@ episode_index = 0
 lines = []
 
 # ---------------- 搜索 .parquet 文件 ----------------
-chunk_folders = sorted([p for p in OUTPUT_ROOT.iterdir() if p.is_dir() and p.name.startswith("chunk-")])
+chunk_folders = sorted([p for p in OUTPUT_ROOT.iterdir() if p.is_dir() and p.name.startswith("chunk-")],
+                       key=lambda x: int(x.name.split('-')[-1]))
 if not chunk_folders:
     raise FileNotFoundError(f"未找到任何 chunk-* 目录，请检查路径：{OUTPUT_ROOT}")
 
 for chunk_folder in chunk_folders:
-    parquet_files = sorted(chunk_folder.glob("episode_*.parquet"))
+    parquet_files = sorted(chunk_folder.glob("episode_*.parquet"), key=lambda x: int(x.stem.split('_')[-1]))
     if not parquet_files:
         print(f"[WARN] {chunk_folder} 中未找到 parquet 文件")
         continue
 
     for pq_file in parquet_files:
+        # 检查文件是否存在
+        if not pq_file.exists():
+            print(f"⚠️  文件不存在，跳过: {pq_file}")
+            continue
+
         try:
             # 读取 parquet 文件，统计 step 数
             df = pd.read_parquet(pq_file)

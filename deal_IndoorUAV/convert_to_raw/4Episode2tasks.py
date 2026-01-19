@@ -16,7 +16,8 @@ meta_dir = os.path.dirname(episodes_file)
 base_dir = os.path.dirname(meta_dir)
 chunk_dir = os.path.join(base_dir, "data", "chunk-000")
 
-parquet_files = [f for f in os.listdir(chunk_dir) if f.endswith(".parquet")]
+parquet_files = sorted([f for f in os.listdir(chunk_dir) if f.endswith(".parquet")],
+                       key=lambda x: int(x.split('_')[-1].replace('.parquet', '')))
 chunk_size = len(parquet_files)
 
 if chunk_size == 0:
