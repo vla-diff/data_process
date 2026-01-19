@@ -117,7 +117,7 @@ for type_idx, type_folder in enumerate(task_type_folders):
         merged_df = pd.concat(all_data, ignore_index=True)
 
         # 下采样
-        sample_interval = 2
+        sample_interval = 1
         if len(merged_df) > 0:
             # 先记住原始的“真正最后一帧”
             last_row = merged_df.iloc[-1].copy()

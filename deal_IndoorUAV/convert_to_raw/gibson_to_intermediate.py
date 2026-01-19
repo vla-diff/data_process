@@ -11,7 +11,19 @@ def yaw_to_quaternion(yaw_degrees):
     return [0.0, 0.0, np.sin(yaw_rad / 2), np.cos(yaw_rad / 2)]
 
 def process_vla_ins(traj_folder, vla_ins_file, posture_data, output_folder, episode_idx):
-    vla_ins = json.load(open(vla_ins_file))
+    try:
+        with open(vla_ins_file, 'r', encoding='utf-8') as f:
+            vla_ins = json.load(f)
+    except (UnicodeDecodeError, json.JSONDecodeError) as e:
+        # Try with different encoding if utf-8 fails
+        try:
+            with open(vla_ins_file, 'r', encoding='latin-1') as f:
+                vla_ins = json.load(f)
+        except (UnicodeDecodeError, json.JSONDecodeError) as e2:
+            # Skip this file if it's corrupted
+            print(f"  ⚠️  Skipping corrupted file: {vla_ins_file} (Error: {e2})")
+            return None
+
     instruction = vla_ins["instruction"]
     start_frame, end_frame = vla_ins["source"]
 
@@ -22,6 +34,16 @@ def process_vla_ins(traj_folder, vla_ins_file, posture_data, output_folder, epis
     episode_folder.mkdir(parents=True, exist_ok=True)
     with open(episode_folder / "instruction.txt", "w") as f:
         f.write(instruction)
+
+    # Save source information
+    source_info = f"""Source Information:
+Original trajectory folder: {traj_folder}
+VLA instruction file: {vla_ins_file}
+Frame range: {start_frame} to {end_frame}
+Total frames: {end_frame - start_frame + 1}
+"""
+    with open(episode_folder / "source_info.txt", "w") as f:
+        f.write(source_info)
 
     output_path = episode_folder / "1" / "1"
     output_path.mkdir(parents=True, exist_ok=True)
@@ -92,9 +114,10 @@ def main():
             vla_ins_files = sorted(vla_ins_dir.glob("vla_ins_*.json"), key=lambda x: int(x.stem.split('_')[-1]))
 
             for vla_ins_file in vla_ins_files:
-                process_vla_ins(traj, vla_ins_file, posture_data, output_root, global_episode_idx + 1)
-                global_episode_idx += 1
-                print(f"  Episode {global_episode_idx}: {traj.name}/{vla_ins_file.name}")
+                result = process_vla_ins(traj, vla_ins_file, posture_data, output_root, global_episode_idx + 1)
+                if result is not None:  # Only increment if processing succeeded
+                    global_episode_idx += 1
+                    print(f"  Episode {global_episode_idx}: {traj.name}/{vla_ins_file.name}")
 
     print(f"✅ Total episodes created: {global_episode_idx}")
 
