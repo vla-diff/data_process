@@ -117,7 +117,7 @@ for type_idx, type_folder in enumerate(task_type_folders):
         merged_df = pd.concat(all_data, ignore_index=True)
 
         # 下采样
-        sample_interval = 2
+        sample_interval = 1
         if len(merged_df) > 0:
             # 先记住原始的“真正最后一帧”
             last_row = merged_df.iloc[-1].copy()
@@ -158,7 +158,9 @@ for type_idx, type_folder in enumerate(task_type_folders):
                 merged_df["位置Y"].iloc[i],
                 merged_df["位置Z"].iloc[i]
             ], dtype=float)
-            rel_pos = pos - p0
+            # rel_pos = pos - p0
+            rel_pos = pos
+
 
             # 四元数→欧拉角
             q = np.array([
@@ -172,8 +174,12 @@ for type_idx, type_folder in enumerate(task_type_folders):
             euler = R_t.as_euler('xyz', degrees=False)
 
             # 欧拉角归一化
-            rel_euler = euler - euler0
+            # rel_euler = euler - euler0
+            rel_euler = euler
+            
             rel_euler = (rel_euler + np.pi) % (2 * np.pi) - np.pi
+            rel_euler[-3] = 0.0
+            rel_euler[-2] = 0.0
 
             # 拼接位置+欧拉角
             state = np.concatenate([rel_pos, rel_euler]).tolist()
