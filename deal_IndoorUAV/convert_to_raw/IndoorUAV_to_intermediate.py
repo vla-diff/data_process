@@ -41,7 +41,7 @@ Total frames: {end_frame - start_frame + 1}
     with open(episode_folder / "source_info.txt", "w") as f:
         f.write(source_info)
 
-    output_path = episode_folder / "1" / "1"
+    output_path = episode_folder / "1" / "1-1"
     output_path.mkdir(parents=True, exist_ok=True)
 
     rows = []

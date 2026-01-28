@@ -14,12 +14,35 @@ INTERMEDIATE_BASE="/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb
 SCRIPT_DIR="/inspire/hdd/global_user/konghanlin-253108540238/data_process/deal_IndoorUAV/convert_to_raw"
 
 # Create base directories
+rm -r $INTERMEDIATE_BASE
 mkdir -p $INTERMEDIATE_BASE
-mkdir -p $FINAL_BASE
 
 # Get list of all datasets
-DATASETS=(gibson_2 ...)
-# DATASETS=(gibson_2)
+DATASETS=(
+    gibson_1
+    gibson_2
+    hm3d_1
+    hm3d_2
+    hm3d_3
+    hm3d_4
+    hm3d_5
+    hm3d_6
+    hm3d_7
+    hm3d_8
+    hm3d_9
+    hm3d_10
+    hm3d_11
+    hm3d_12
+    hm3d_13
+    hm3d_14
+    hm3d_15
+    hm3d_16
+    hm3d_17
+    hm3d_18
+    mp3d_1
+    mp3d_2
+    replica
+)
 
 echo "=========================================="
 echo "Converting ${#DATASETS[@]} datasets to LeRobot format"
@@ -41,8 +64,8 @@ for DATASET_NAME in "${DATASETS[@]}"; do
     INTERMEDIATE_ROOT="$INTERMEDIATE_BASE/${DATASET_NAME}_intermediate"
 
     # Check if paths exist
-    if [ ! -d "$GIBSON_ROOT" ]; then
-        echo "❌ ERROR: Gibson root not found: $GIBSON_ROOT"
+    if [ ! -d "$IndoorUAV_ROOT" ]; then
+        echo "❌ ERROR: Gibson root not found: $IndoorUAV_ROOT"
         FAILED_DATASETS+=("$DATASET_NAME (missing gibson root)")
         continue
     fi
@@ -56,7 +79,7 @@ for DATASET_NAME in "${DATASETS[@]}"; do
     
 
     echo ""
-    echo " Converting IndoorUAV to raw format
+    echo "Converting IndoorUAV to raw format"
     if ! python3 $SCRIPT_DIR/IndoorUAV_to_intermediate.py \
         --IndoorUAV_root $IndoorUAV_ROOT \
         --vla_ins_root $VLA_INS_PATH \
@@ -65,3 +88,25 @@ for DATASET_NAME in "${DATASETS[@]}"; do
         FAILED_DATASETS+=("$DATASET_NAME (IndoorUAV_to_intermediate)")
         continue
     fi
+
+    echo "✅ Successfully processed $DATASET_NAME"
+    echo ""
+done
+
+echo "=========================================="
+echo "Conversion Complete!"
+echo "=========================================="
+echo "Total datasets processed: ${#DATASETS[@]}"
+echo "Failed datasets: ${#FAILED_DATASETS[@]}"
+
+if [ ${#FAILED_DATASETS[@]} -gt 0 ]; then
+    echo ""
+    echo "Failed datasets:"
+    for failed in "${FAILED_DATASETS[@]}"; do
+        echo "  - $failed"
+    done
+    exit 1
+else
+    echo "All datasets converted successfully!"
+    exit 0
+fi

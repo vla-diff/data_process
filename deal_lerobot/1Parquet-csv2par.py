@@ -92,11 +92,20 @@ for type_idx, type_folder in enumerate(task_type_folders):
 
             df = pd.read_csv(csv_file)
 
-            required_columns = ["位置X", "位置Y", "位置Z",
-                                "姿态X", "姿态Y", "姿态Z", "姿态W","bbox_x1","bbox_y1","bbox_x2","bbox_y2"]
-            if not all(col in df.columns for col in required_columns):
+            base_columns = ["位置X", "位置Y", "位置Z",
+                            "姿态X", "姿态Y", "姿态Z", "姿态W"]
+            bbox_columns = ["bbox_x1", "bbox_y1", "bbox_x2", "bbox_y2"]
+
+            if not all(col in df.columns for col in base_columns):
                 raise ValueError(f"CSV 缺少必要列: {csv_file}")
 
+            missing_bbox = [c for c in bbox_columns if c not in df.columns]
+            if missing_bbox:
+                print(f"⚠️ {csv_file} 缺少 bbox 列 {missing_bbox}，已默认填 0")
+                for c in missing_bbox:
+                    df[c] = 0.0
+
+            required_columns = base_columns + bbox_columns
             df = df[required_columns]
 
             df["bbox_x1"] = df["bbox_x1"] / 1000.0 * 640.0
@@ -176,7 +185,7 @@ for type_idx, type_folder in enumerate(task_type_folders):
             # 欧拉角归一化
             # rel_euler = euler - euler0
             rel_euler = euler
-            
+
             rel_euler = (rel_euler + np.pi) % (2 * np.pi) - np.pi
             rel_euler[-3] = 0.0
             rel_euler[-2] = 0.0
