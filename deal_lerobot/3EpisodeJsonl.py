@@ -114,7 +114,10 @@ if not chunk_folders:
     raise FileNotFoundError(f"未找到任何 chunk-* 目录，请检查路径：{OUTPUT_ROOT}")
 
 for chunk_folder in chunk_folders:
-    parquet_files = sorted(chunk_folder.glob("episode_*.parquet"))
+    parquet_files = sorted(
+        chunk_folder.glob("episode_*.parquet"),
+        key=lambda x: int(x.stem.split('_')[-1])
+    )
     if not parquet_files:
         print(f"[WARN] {chunk_folder} 中未找到 parquet 文件")
         continue

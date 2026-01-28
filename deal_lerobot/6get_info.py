@@ -28,13 +28,19 @@ if total_chunks == 0:
     raise RuntimeError("❌ 没有找到任何 chunk 文件夹")
 # 1.1 计算 chunk_size（每个 chunk 中 parquet 文件数量）
 first_chunk = os.path.join(data_root, chunk_dirs[0])
-first_chunk_parquet_files = sorted(glob.glob(os.path.join(first_chunk, "*.parquet")))
+first_chunk_parquet_files = sorted(
+    glob.glob(os.path.join(first_chunk, "*.parquet")),
+    key=lambda x: int(os.path.basename(x).split('_')[-1].split('.')[0])
+)
 if not first_chunk_parquet_files:
     raise RuntimeError(f"❌ {first_chunk} 中没有 parquet 文件")
 chunk_size = len(first_chunk_parquet_files)
 # 2. 找最后一个 chunk 的最后一个 parquet 文件
 last_chunk = os.path.join(data_root, chunk_dirs[-1])
-parquet_files = sorted(glob.glob(os.path.join(last_chunk, "*.parquet")))
+parquet_files = sorted(
+    glob.glob(os.path.join(last_chunk, "*.parquet")),
+    key=lambda x: int(os.path.basename(x).split('_')[-1].split('.')[0])
+)
 if not parquet_files:
     raise RuntimeError(f"❌ {last_chunk} 中没有 parquet 文件")
 last_parquet = parquet_files[-1]
