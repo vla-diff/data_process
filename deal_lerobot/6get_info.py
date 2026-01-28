@@ -21,7 +21,10 @@ meta_root = os.path.join(output, "meta")
 
 
 # 1. 找 total_chunks
-chunk_dirs = sorted([d for d in os.listdir(data_root) if d.startswith("chunk-")])
+chunk_dirs = sorted(
+    [d for d in os.listdir(data_root) if d.startswith("chunk-")],
+    key=lambda x: int(x.split('-')[-1])
+)
 total_chunks = len(chunk_dirs)
 
 if total_chunks == 0:

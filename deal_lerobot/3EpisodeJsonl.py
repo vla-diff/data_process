@@ -109,7 +109,10 @@ episode_index = 0
 lines = []
 
 # ---------------- 搜索 .parquet 文件 ----------------
-chunk_folders = sorted([p for p in OUTPUT_ROOT.iterdir() if p.is_dir() and p.name.startswith("chunk-")])
+chunk_folders = sorted(
+    [p for p in OUTPUT_ROOT.iterdir() if p.is_dir() and p.name.startswith("chunk-")],
+    key=lambda x: int(x.name.split('-')[-1])
+)
 if not chunk_folders:
     raise FileNotFoundError(f"未找到任何 chunk-* 目录，请检查路径：{OUTPUT_ROOT}")
 

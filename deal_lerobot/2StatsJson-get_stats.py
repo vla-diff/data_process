@@ -39,7 +39,7 @@ output_jsonl = f"{root_path}/meta/episodes_stats.jsonl"
 # ---------- 获取所有 parquet 文件 ----------
 parquet_files = sorted(
     glob.glob(os.path.join(data_root, "chunk-*", "*.parquet")),
-    key=lambda x: (os.path.basename(os.path.dirname(x)), int(os.path.basename(x).split('_')[-1].split('.')[0]))
+    key=lambda x: (int(os.path.basename(os.path.dirname(x)).split('-')[-1]), int(os.path.basename(x).split('_')[-1].split('.')[0]))
 )
 
 episode_stats_list = []

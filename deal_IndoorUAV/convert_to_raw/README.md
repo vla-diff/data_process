@@ -1,4 +1,4 @@
 1.先运行convert_to_raw/convert_all_datasets.bash得到raw数据
 2.再运行merge_all_datasets.py得到合并后的数据raw数据（无四元数，有yaw）
-3.再运行convert_csv_yaw_to_quat.py得到真正的raw数据（有四元数，无yaw）
+3.再运行convert_xyzyaw2xyzquarternion.py得到真正的raw数据（有四元数，无yaw）
 4.再跑deal_lerobot里的脚本得到lerobot数据

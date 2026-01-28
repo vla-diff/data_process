@@ -5,11 +5,11 @@ SRC_ROOT="/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/merged_a
 DST_ROOT=$SRC_ROOT
 FINAL_ROOT="/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/lerobot_all" #最终输出根目录路径
 
-rm -r $FINAL_ROOT
-mkdir -p $FINAL_ROOT
+# rm -r $FINAL_ROOT
+# mkdir -p $FINAL_ROOT
 
-echo "1"
-python3 1Parquet-csv2par.py --parent_folder_path $DST_ROOT --output_root $FINAL_ROOT
+# echo "1"
+# python3 1Parquet-csv2par.py --parent_folder_path $DST_ROOT --output_root $FINAL_ROOT
 
 echo "3"
 python3 3EpisodeJsonl.py --output_root $FINAL_ROOT/data --reorg_root $DST_ROOT --output_file $FINAL_ROOT/meta/episodes.jsonl #从.parquet读取index_length
