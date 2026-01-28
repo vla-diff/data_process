@@ -5,10 +5,6 @@ import shutil
 import argparse
 from pathlib import Path
 
-def yaw_to_quaternion(yaw_degrees):
-    """Convert yaw to quaternion with pitch=0, roll=0"""
-    yaw_rad = np.radians(yaw_degrees)
-    return [0.0, 0.0, np.sin(yaw_rad / 2), np.cos(yaw_rad / 2)]
 
 def process_vla_ins(traj_folder, vla_ins_file, posture_data, output_folder, episode_idx):
     try:
@@ -50,16 +46,12 @@ Total frames: {end_frame - start_frame + 1}
 
     rows = []
     for i, [x, y, z, yaw] in enumerate(posture_slice):
-        qx, qy, qz, qw = yaw_to_quaternion(yaw)
         rows.append({
             "时间戳(秒)": i * 0.2,
             "位置X": x,
             "位置Y": y,
             "位置Z": z,
-            "姿态X": qx,
-            "姿态Y": qy,
-            "姿态Z": qz,
-            "姿态W": qw,
+            "yaw": yaw,
             "bbox_x1": 0.0,
             "bbox_y1": 0.0,
             "bbox_x2": 0.0,
@@ -80,17 +72,17 @@ Total frames: {end_frame - start_frame + 1}
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gibson_root', required=True)
+    parser.add_argument('--IndoorUAV_root', required=True)
     parser.add_argument('--vla_ins_root', required=True)
     parser.add_argument('--output_root', required=True)
     parser.add_argument('--test_scene', default=None, help='Process only this scene for testing')
     args = parser.parse_args()
 
-    gibson_root = Path(args.gibson_root)
+    IndoorUAV_root = Path(args.IndoorUAV_root)
     vla_ins_root = Path(args.vla_ins_root)
     output_root = Path(args.output_root)
 
-    scenes = sorted([d for d in gibson_root.iterdir() if d.is_dir()])
+    scenes = sorted([d for d in IndoorUAV_root.iterdir() if d.is_dir()])
     if args.test_scene:
         scenes = [s for s in scenes if s.name == args.test_scene]
 
