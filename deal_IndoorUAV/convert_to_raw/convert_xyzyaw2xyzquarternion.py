@@ -26,7 +26,8 @@ def quat_normalize(q):
 
 def unity_to_ros_position(x, y, z):
     # Matches plugin_patch/ImageMsgSerializer.cs UnityToRosPosition
-    return (x, y, z)
+    # Flip Y to convert Unity's left-handed frame to ROS right-handed (yaw++ is left).
+    return (x, -y, z)
 
 
 def unity_yaw_to_ros_quat(yaw_rad):
@@ -127,7 +128,7 @@ def main():
     )
     parser.add_argument(
         "--input-root",
-        default="/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/intermediate_all/all_intermediate_copy",
+        default="/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/merged_all",
         help="输入数据根目录 (默认: indoor_uav_data)"
     )
     parser.add_argument(
@@ -142,7 +143,6 @@ def main():
         action="store_true",
         help="原地覆盖 input-root 下的 data.csv"
     )
-
     args = parser.parse_args()
 
     input_root = os.path.abspath(args.input_root)
