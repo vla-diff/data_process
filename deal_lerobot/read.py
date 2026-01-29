@@ -45,5 +45,5 @@ def read_parquet(file_path: str, save_csv: bool = True):
 
 if __name__ == "__main__":
     # 🔧 在这里设置 parquet 文件路径
-    file_path = r"/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/lerobot_all/all_lerobot/data/chunk-6028/episode_006028.parquet"
+    file_path = r"/inspire/hdd/global_user/konghanlin-253108540238/datasets/dzb/lerobot_all/data/chunk-28557/episode_028557.parquet"
     read_parquet(file_path)
